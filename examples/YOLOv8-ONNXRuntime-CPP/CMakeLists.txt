@@ -29,13 +29,15 @@ endif ()
 # -------------- ONNXRUNTIME  ------------------#
 
 # Set ONNXRUNTIME_VERSION
-set(ONNXRUNTIME_VERSION 1.15.1)
+set(ONNXRUNTIME_VERSION 1.17.1)
 
 if (WIN32)
     if (USE_CUDA)
         set(ONNXRUNTIME_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/onnxruntime-win-x64-gpu-${ONNXRUNTIME_VERSION}")
     else ()
-        set(ONNXRUNTIME_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/onnxruntime-win-x64-${ONNXRUNTIME_VERSION}")
+	#set(ONNXRUNTIME_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/onnxruntime-win-x64-${ONNXRUNTIME_VERSION}")
+	# Prepare for ONNXRuntime
+        include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/onnxruntime.cmake)
     endif ()
 elseif (LINUX)
     if (USE_CUDA)
@@ -51,7 +53,11 @@ elseif (APPLE)
     # set(ONNXRUNTIME_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/onnxruntime-osx-universal2-${ONNXRUNTIME_VERSION}")
 endif ()
 
-include_directories(${PROJECT_NAME} ${ONNXRUNTIME_ROOT}/include)
+if (WIN32)
+    include_directories(${PROJECT_NAME} ${ONNXRUNTIME_INCLUDE_DIR})
+else()
+    include_directories(${PROJECT_NAME} ${ONNXRUNTIME_ROOT}/include)
+endif()
 
 set(PROJECT_SOURCES
         main.cpp
@@ -62,7 +68,7 @@ set(PROJECT_SOURCES
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
 if (WIN32)
-    target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib)
+    target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${ONNXRUNTIME_LIB_DIR}/onnxruntime.lib)
     if (USE_CUDA)
         target_link_libraries(${PROJECT_NAME} ${CUDA_LIBRARIES})
     endif ()
@@ -79,7 +85,7 @@ endif ()
 if (WIN32)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${ONNXRUNTIME_ROOT}/lib/onnxruntime.dll"
+            "${ONNXRUNTIME_LIB_DIR}/onnxruntime.dll"
             $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 endif ()
 
