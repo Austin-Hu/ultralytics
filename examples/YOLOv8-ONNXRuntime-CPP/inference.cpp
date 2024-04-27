@@ -241,8 +241,8 @@ char* YOLO_V8::TensorProcess(clock_t& starttime_1, cv::Mat& iImg, N& blob, std::
         //Note:
         //ultralytics add transpose operator to the output of yolov8 model.which make yolov8/v5/v7 has same shape
         //https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt
-        //rowData = rowData.t();
-
+        rawData = rawData.t();
+        std::swap(strideNum, signalResultNum);
         float* data = (float*)rawData.data;
 
         for (int i = 0; i < strideNum; ++i)

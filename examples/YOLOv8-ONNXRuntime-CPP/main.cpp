@@ -188,6 +188,6 @@ void ClsTest()
 
 int main()
 {
-    //DetectTest();
-    ClsTest();
+    DetectTest();
+    //ClsTest();
 }
