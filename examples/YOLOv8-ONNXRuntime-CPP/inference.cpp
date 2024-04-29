@@ -4,7 +4,7 @@
 #define benchmark
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 YOLO_V8::YOLO_V8() {
-
+    cudaEnable = false;
 }
 
 
