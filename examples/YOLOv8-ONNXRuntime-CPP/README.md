@@ -90,6 +90,7 @@ Note (2): Due to ONNX Runtime, we need to use CUDA 11 and cuDNN 8. Keep in mind 
 
 6. The built executable should now be located in the `build` directory.
 
+7. Copy any `.jpg`, `.png` or `.jpeg` image into the "images/" directory for inference.
 ## Usage 🚀
 
 ```c++
