@@ -49,10 +49,10 @@ void Detector(YOLO_V8*& p) {
 
 
             }
-            std::cout << "Press any key to exit" << std::endl;
+            //std::cout << "Press any key to exit" << std::endl;
             cv::imshow("Result of Detection", img);
-            cv::waitKey(0);
-            cv::destroyAllWindows();
+            cv::waitKey(1);
+            //cv::destroyAllWindows();
         }
     }
 }
@@ -171,7 +171,10 @@ void DetectTest()
 
 #endif
     yoloDetector->CreateSession(params);
-    Detector(yoloDetector);
+    while (1)
+    {
+        Detector(yoloDetector);
+    }
 }
 
 
